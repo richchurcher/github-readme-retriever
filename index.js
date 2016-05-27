@@ -12,12 +12,12 @@ var _octonode2 = _interopRequireDefault(_octonode);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function getList(_ref) {
+function getList(_ref, token) {
   var owner = _ref.owner;
   var repo = _ref.repo;
   var path = _ref.path;
 
-  var client = _octonode2.default.client(process.env['GRR_ACCESS_TOKEN']);
+  var client = _octonode2.default.client(token);
 
   return new Promise(function (resolve, reject) {
     client.repo(owner + '/' + repo).contents(path, function (err, list) {
@@ -38,19 +38,19 @@ function getList(_ref) {
   });
 }
 
-function getFiles(_ref2) {
+function getFiles(_ref2, token) {
   var owner = _ref2.owner;
   var repo = _ref2.repo;
   var path = _ref2.path;
   var paths = _ref2.paths;
 
   return Promise.all(paths.map(function (path) {
-    return getFile(owner, repo, path);
+    return getFile(owner, repo, path, token);
   }));
 }
 
-function getFile(owner, repo, path) {
-  var client = _octonode2.default.client(process.env['GRR_ACCESS_TOKEN']);
+function getFile(owner, repo, path, token) {
+  var client = _octonode2.default.client(token);
 
   return new Promise(function (resolve, reject) {
     client.repo(owner + '/' + repo).contents(path + '/README.md', function (err, file) {

@@ -38,9 +38,19 @@ function getFile (owner, repo, path, token) {
         if (err) {
           return reject(new Error(`Couldn't get a README for ${path}.`))
         }
-        return resolve(file)
+        return resolve(getParts(file))
       })
   })
+}
+
+function getParts (file) {
+  const body = Buffer.from(file.content, 'base64').toString()
+  let title = body.split('\n')[0]
+  title = title.replace(/[\W]*/, '').trim()
+  return {
+    title: title,
+    body: body
+  }
 }
 
 function getPaths (list) {
