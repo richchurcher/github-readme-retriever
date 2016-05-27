@@ -39,7 +39,8 @@ test('grr.getList gets list of paths', (t) => {
 })
 
 test('grr.getFiles retrieves the correct contents', (t) => {
-  const list = [ 'assignments/week-1' ]
+  const list = [ 'assignments/week-1',
+  'assignments/week-1' ]
   const expected = getFiles
   return grr.getFiles({
     owner: org,

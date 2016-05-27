@@ -27,6 +27,9 @@ export function getFiles ({owner, repo, path, paths}, token) {
   return Promise.all(paths.map((path) => {
     return getFile(owner, repo, path, token)
   }))
+    .then((files) => {
+      return files
+    })
 }
 
 function getFile (owner, repo, path, token) {
