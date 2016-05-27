@@ -1,6 +1,6 @@
 {
   "name": "github-readme-retriever",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Retrieve README.md from GitHub API",
   "main": "index.js",
   "scripts": {
