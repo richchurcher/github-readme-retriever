@@ -46,7 +46,9 @@ function getFiles(_ref2, token) {
 
   return Promise.all(paths.map(function (path) {
     return getFile(owner, repo, path, token);
-  }));
+  })).then(function (files) {
+    return files;
+  });
 }
 
 function getFile(owner, repo, path, token) {
