@@ -10,8 +10,6 @@ const org = 'wombats'
 const repo = 'aardvarks'
 const path = 'assignments'
 
-process.env['GRR_ACCESS_TOKEN'] = 1
-
 test('mock API reponses', (t) => {
   nock('https://api.github.com')
     .persist()
@@ -34,7 +32,7 @@ test('grr.getList gets list of paths', (t) => {
     owner: org,
     repo: repo,
     path: path
-  })
+  }, '1')
     .then((actual) => {
       t.deepEqual(actual.paths, expected.paths)
     })
@@ -48,7 +46,7 @@ test('grr.getFiles retrieves the correct contents', (t) => {
     repo: repo,
     path: path,
     paths: list
-  })
+  }, '1')
     .then((actual) => {
       t.equal(actual[0].content, expected[0].content)
     })

@@ -1,7 +1,7 @@
 import github from 'octonode'
 
-export function getList ({owner, repo, path}) {
-  const client = github.client(process.env['GRR_ACCESS_TOKEN'])
+export function getList ({owner, repo, path}, token) {
+  const client = github.client(token)
 
   return new Promise((resolve, reject) => {
     client.repo(`${owner}/${repo}`)
@@ -23,14 +23,14 @@ export function getList ({owner, repo, path}) {
   })
 }
 
-export function getFiles ({owner, repo, path, paths}) {
+export function getFiles ({owner, repo, path, paths}, token) {
   return Promise.all(paths.map((path) => {
-    return getFile(owner, repo, path)
+    return getFile(owner, repo, path, token)
   }))
 }
 
-function getFile (owner, repo, path) {
-  const client = github.client(process.env['GRR_ACCESS_TOKEN'])
+function getFile (owner, repo, path, token) {
+  const client = github.client(token)
 
   return new Promise((resolve, reject) => {
     client.repo(`${owner}/${repo}`)
