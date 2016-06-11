@@ -20,25 +20,20 @@ function getList(_ref, token) {
 
   var client = _octonode2.default.client(token);
 
-  if (branch) {
-    return new Promise(function (resolve, reject) {
-      client.repo(owner + '/' + repo).contents(path, branch, handleList);
-    });
-  }
   return new Promise(function (resolve, reject) {
-    client.repo(owner + '/' + repo).contents(path, handleList);
+    client.repo(owner + '/' + repo).contents(path, branch, handleList);
   });
 }
 
 function handleList(err, list) {
   if (err) {
-    return reject(new Error('Couldn\'t get contents for ' + path + ' from the ' + repo + ' repo.'));
+    return Promise.reject(new Error('Couldn\'t get contents for ' + path + ' from the ' + repo + ' repo.'));
   }
   if (list.length === 0) {
-    return reject(new Error('Nothing to retrieve found at path ' + path + '.'));
+    return Promise.reject(new Error('Nothing to retrieve found at path ' + path + '.'));
   }
   var paths = getPaths(list);
-  return resolve({
+  return Promise.resolve({
     owner: owner,
     repo: repo,
     path: path,
