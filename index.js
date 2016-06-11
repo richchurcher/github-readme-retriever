@@ -16,25 +16,33 @@ function getList(_ref, token) {
   var owner = _ref.owner;
   var repo = _ref.repo;
   var path = _ref.path;
+  var branch = _ref.branch;
 
   var client = _octonode2.default.client(token);
 
-  return new Promise(function (resolve, reject) {
-    client.repo(owner + '/' + repo).contents(path, function (err, list) {
-      if (err) {
-        return reject(new Error('Couldn\'t get contents for ' + path + ' from the ' + repo + ' repo.'));
-      }
-      if (list.length === 0) {
-        return reject(new Error('Nothing to retrieve found at path ' + path + '.'));
-      }
-      var paths = getPaths(list);
-      return resolve({
-        owner: owner,
-        repo: repo,
-        path: path,
-        paths: paths
-      });
+  if (branch) {
+    return new Promise(function (resolve, reject) {
+      client.repo(owner + '/' + repo).contents(path, branch, handleList);
     });
+  }
+  return new Promise(function (resolve, reject) {
+    client.repo(owner + '/' + repo).contents(path, handleList);
+  });
+}
+
+function handleList(err, list) {
+  if (err) {
+    return reject(new Error('Couldn\'t get contents for ' + path + ' from the ' + repo + ' repo.'));
+  }
+  if (list.length === 0) {
+    return reject(new Error('Nothing to retrieve found at path ' + path + '.'));
+  }
+  var paths = getPaths(list);
+  return resolve({
+    owner: owner,
+    repo: repo,
+    path: path,
+    paths: paths
   });
 }
 
@@ -46,9 +54,7 @@ function getFiles(_ref2, token) {
 
   return Promise.all(paths.map(function (path) {
     return getFile(owner, repo, path, token);
-  })).then(function (files) {
-    return files;
-  });
+  }));
 }
 
 function getFile(owner, repo, path, token) {
