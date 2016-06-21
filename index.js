@@ -22,36 +22,29 @@ function getList(_ref, token) {
 
   return new Promise(function (resolve, reject) {
     client.repo(owner + '/' + repo).contents(path, branch, function (err, list) {
-      return handleList(err, list, { owner: owner, repo: repo, path: path });
+      if (err) {
+        return reject(new Error('Couldn\'t get contents for ' + path + ' from the ' + repo + ' repo.'));
+      }
+      return resolve(handleList(list, owner, repo, path));
     });
   });
 }
 
-function handleList(err, list, _ref2) {
-  var owner = _ref2.owner;
-  var repo = _ref2.repo;
-  var path = _ref2.path;
-
-  if (err) {
-    return Promise.reject(new Error('Couldn\'t get contents for ' + path + ' from the ' + repo + ' repo.'));
-  }
-  if (list.length === 0) {
-    return Promise.reject(new Error('Nothing to retrieve found at path ' + path + '.'));
-  }
+function handleList(list, owner, repo, path) {
   var paths = getPaths(list);
-  return Promise.resolve({
+  return {
     owner: owner,
     repo: repo,
     path: path,
     paths: paths
-  });
+  };
 }
 
-function getFiles(_ref3, token) {
-  var owner = _ref3.owner;
-  var repo = _ref3.repo;
-  var path = _ref3.path;
-  var paths = _ref3.paths;
+function getFiles(_ref2, token) {
+  var owner = _ref2.owner;
+  var repo = _ref2.repo;
+  var path = _ref2.path;
+  var paths = _ref2.paths;
 
   return Promise.all(paths.map(function (path) {
     return getFile(owner, repo, path, token);
