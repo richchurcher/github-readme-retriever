@@ -10,7 +10,7 @@ const org = 'wombats'
 const repo = 'aardvarks'
 const path = 'assignments'
 
-//"IyAxLjAgQQoKIyMgQgoKLSBbIF0gQwo=\n",
+// "IyAxLjAgQQoKIyMgQgoKLSBbIF0gQwo=\n",
 
 test('mock API reponses', (t) => {
   nock('https://api.github.com')
@@ -42,7 +42,7 @@ test('grr.getList gets list of paths', (t) => {
 
 test('grr.getFiles retrieves the correct contents', (t) => {
   const readmeStub = {
-    content: "IyAxLjAgQQoKIyMgQgoKLSBbIF0gQwo=\n"
+    content: 'IyAxLjAgQQoKIyMgQgoKLSBbIF0gQwo=\n'
   }
   nock('https://api.github.com')
     .get('/repos/org/repo/contents/path/directory/README.md?access_token=1')

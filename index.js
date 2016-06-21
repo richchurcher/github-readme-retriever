@@ -21,11 +21,17 @@ function getList(_ref, token) {
   var client = _octonode2.default.client(token);
 
   return new Promise(function (resolve, reject) {
-    client.repo(owner + '/' + repo).contents(path, branch, handleList);
+    client.repo(owner + '/' + repo).contents(path, branch, function (err, list) {
+      return handleList(err, list, { owner: owner, repo: repo, path: path });
+    });
   });
 }
 
-function handleList(err, list) {
+function handleList(err, list, _ref2) {
+  var owner = _ref2.owner;
+  var repo = _ref2.repo;
+  var path = _ref2.path;
+
   if (err) {
     return Promise.reject(new Error('Couldn\'t get contents for ' + path + ' from the ' + repo + ' repo.'));
   }
@@ -41,11 +47,11 @@ function handleList(err, list) {
   });
 }
 
-function getFiles(_ref2, token) {
-  var owner = _ref2.owner;
-  var repo = _ref2.repo;
-  var path = _ref2.path;
-  var paths = _ref2.paths;
+function getFiles(_ref3, token) {
+  var owner = _ref3.owner;
+  var repo = _ref3.repo;
+  var path = _ref3.path;
+  var paths = _ref3.paths;
 
   return Promise.all(paths.map(function (path) {
     return getFile(owner, repo, path, token);
