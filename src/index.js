@@ -9,15 +9,12 @@ export function getList ({owner, repo, path, branch}, token) {
         if (err) {
           return reject(new Error(`Couldn't get contents for ${path} from the ${repo} repo.`))
         }
-        if (list.length === 0) {
-          return reject(new Error(`Nothing to retrieve found at path ${path}.`))
-        }
-        return resolve(handleList(err, list, owner, repo, path))
+        return resolve(handleList(list, owner, repo, path))
       })
   })
 }
 
-function handleList (err, list, owner, repo, path) {
+function handleList (list, owner, repo, path) {
   const paths = getPaths(list)
   return {
     owner: owner,
